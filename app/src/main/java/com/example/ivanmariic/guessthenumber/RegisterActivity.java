@@ -1,5 +1,6 @@
 package com.example.ivanmariic.guessthenumber;
 
+import android.database.sqlite.SQLiteConstraintException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -29,20 +30,30 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                boolean isSuccessful = false;
                 String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 String name = firstNameEditText.getText().toString();
                 String lastName = firstNameEditText.getText().toString();
                 String dateOfBirth = dateOfBirthEditText.getText().toString();
-                PlayerEntity player = new PlayerEntity(username,password,dateOfBirth,name,lastName);
-                LoginActivity.db.getPlayerDAO().insertPlayer(player);
-                Toast.makeText(getApplicationContext(),"Successful!",Toast.LENGTH_LONG).show();
-                usernameEditText.setText("");
-                passwordEditText.setText("");
-                firstNameEditText.setText("");
-                lastNameEditText.setText("");
-                dateOfBirthEditText.setText("");
+                try {
+                    PlayerEntity player = new PlayerEntity(username, password, dateOfBirth, name, lastName);
+                    LoginActivity.db.getPlayerDAO().insertPlayer(player);
+                    Toast.makeText(getApplicationContext(), "Successful!", Toast.LENGTH_LONG).show();
+                    isSuccessful = true;
+                } catch (SQLiteConstraintException e){
+                    Toast.makeText(RegisterActivity.this,"Username vec postoji",Toast.LENGTH_LONG).show();
+
+                }
+                if(isSuccessful) {
+                    usernameEditText.setText("");
+                    passwordEditText.setText("");
+                    firstNameEditText.setText("");
+                    lastNameEditText.setText("");
+                    dateOfBirthEditText.setText("");
+                }
             }
         });
     }
+
 }

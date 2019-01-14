@@ -22,5 +22,8 @@ public interface PlayerDAO {
     @Query("SELECT password FROM PlayerEntity WHERE password = :password")
     String getPassword(String password);
 
+    @Query("DELETE FROM PlayerEntity")
+    void deleteTable();
+
 
 }

@@ -66,4 +66,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.getPlayerDAO().deleteTable();
+        db.close();
+    }
 }
