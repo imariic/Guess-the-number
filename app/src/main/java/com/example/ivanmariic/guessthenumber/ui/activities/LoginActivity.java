@@ -1,4 +1,4 @@
-package com.example.ivanmariic.guessthenumber;
+package com.example.ivanmariic.guessthenumber.ui.activities;
 
 import android.arch.persistence.room.Room;
 import android.content.Intent;
@@ -8,15 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.example.ivanmariic.guessthenumber.Model.MyDatabase;
 import com.example.ivanmariic.guessthenumber.R;
+import com.example.ivanmariic.guessthenumber.repository.PlayerRepository;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
    private Button loginButton;
    private Button registerButton;
-   public static MyDatabase db;
+   private PlayerRepository playerRepository;
    private EditText usernameEditText;
    private EditText passwordEditText;
 
@@ -32,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        db = Room.databaseBuilder(this,MyDatabase.class,"my_database").allowMainThreadQueries().fallbackToDestructiveMigration().build();
+        playerRepository = PlayerRepository.getInstance();
 
         usernameEditText = findViewById(R.id.name_edit_text);
         passwordEditText = findViewById(R.id.password_edit_text);
@@ -49,8 +48,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         switch(view.getId()){
             case R.id.login_button :
-                if(usernameEditText.getText().toString().equals(db.getPlayerDAO().getUsername(usernameEditText.getText().toString())) && passwordEditText.getText().toString().equals(db.getPlayerDAO().getPassword(passwordEditText.getText().toString()))){
-                  Intent  intent = new Intent(LoginActivity.this,PlayActivity.class);
+                if(usernameEditText.getText().toString().equals(playerRepository.getPlayerUsername(usernameEditText.getText().toString())) && passwordEditText.getText().toString().equals(playerRepository.getPlayerPassword(passwordEditText.getText().toString()))){
+                  Intent  intent = new Intent(LoginActivity.this, PlayActivity.class);
                     startActivity(intent);
                     break;
                 } else {
@@ -59,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
 
             case R.id.register_button:
-                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -70,7 +69,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        db.getPlayerDAO().deleteTable();
-        db.close();
+        playerRepository.deletePlayer();
     }
 }

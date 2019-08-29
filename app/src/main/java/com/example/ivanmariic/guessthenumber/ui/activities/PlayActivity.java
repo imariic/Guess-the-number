@@ -1,4 +1,4 @@
-package com.example.ivanmariic.guessthenumber;
+package com.example.ivanmariic.guessthenumber.ui.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.ivanmariic.guessthenumber.R;
 
 import java.util.Random;
 

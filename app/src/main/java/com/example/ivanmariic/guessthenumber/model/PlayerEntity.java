@@ -1,4 +1,4 @@
-package com.example.ivanmariic.guessthenumber.Model;
+package com.example.ivanmariic.guessthenumber.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;

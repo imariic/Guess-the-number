@@ -1,4 +1,4 @@
-package com.example.ivanmariic.guessthenumber;
+package com.example.ivanmariic.guessthenumber.ui.activities;
 
 import android.database.sqlite.SQLiteConstraintException;
 import android.support.v7.app.AppCompatActivity;
@@ -8,17 +8,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.ivanmariic.guessthenumber.Model.PlayerEntity;
+import com.example.ivanmariic.guessthenumber.GuessTheNumber;
+import com.example.ivanmariic.guessthenumber.R;
+import com.example.ivanmariic.guessthenumber.model.PlayerEntity;
+import com.example.ivanmariic.guessthenumber.repository.PlayerRepository;
 
 public class RegisterActivity extends AppCompatActivity {
 
     EditText usernameEditText, passwordEditText, firstNameEditText, lastNameEditText, dateOfBirthEditText;
     Button registerButton;
+    private PlayerRepository playerRepository;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        playerRepository = PlayerRepository.getInstance();
 
         usernameEditText = findViewById(R.id.username_edit_text);
         passwordEditText = findViewById(R.id.password_edit_text);
@@ -38,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String dateOfBirth = dateOfBirthEditText.getText().toString();
                 try {
                     PlayerEntity player = new PlayerEntity(username, password, dateOfBirth, name, lastName);
-                    LoginActivity.db.getPlayerDAO().insertPlayer(player);
+                    playerRepository.insertPlayer(player);
                     Toast.makeText(getApplicationContext(), "Successful!", Toast.LENGTH_LONG).show();
                     isSuccessful = true;
                 } catch (SQLiteConstraintException e){
